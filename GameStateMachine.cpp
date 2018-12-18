@@ -1,14 +1,13 @@
 #include "GameStateMachine.h"
+#include "GameState.h"
+#include "Game.h"
 
+GameStateMachine::GameStateMachine() {
 
-
-GameStateMachine::GameStateMachine()
-{
 }
 
 
-GameStateMachine::~GameStateMachine()
-{
+GameStateMachine::~GameStateMachine() {
 }
 
 GameState* GameStateMachine::currentState() {

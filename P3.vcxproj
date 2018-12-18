@@ -121,6 +121,7 @@
     <ClInclude Include="BlocksMap.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="checkML.h" />
+    <ClInclude Include="EndMenu.h" />
     <ClInclude Include="FileFormatError.h" />
     <ClInclude Include="FileNotFoundError.h" />
     <ClInclude Include="Game.h" />
@@ -128,9 +129,11 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GameStateMachine.h" />
     <ClInclude Include="InfoBar.h" />
+    <ClInclude Include="MainMenu.h" />
     <ClInclude Include="MenuState.h" />
     <ClInclude Include="MovingObject.h" />
     <ClInclude Include="Paddle.h" />
+    <ClInclude Include="PauseMenu.h" />
     <ClInclude Include="PlayState.h" />
     <ClInclude Include="Reward.h" />
     <ClInclude Include="SDLError.h" />
@@ -146,14 +149,17 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="BlocksMap.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="EndMenu.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GameStateMachine.cpp" />
     <ClCompile Include="InfoBar.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="MovingObject.cpp" />
     <ClCompile Include="Paddle.cpp" />
+    <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="PlayState.cpp" />
     <ClCompile Include="Reward.cpp" />
     <ClCompile Include="SDLGameObject.cpp" />

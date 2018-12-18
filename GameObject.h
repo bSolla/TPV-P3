@@ -9,5 +9,5 @@ public:
 
 	virtual void render() = 0;
 	virtual void update() = 0;
-	virtual void handleEvents(SDL_Event &e) = 0;
+	virtual bool handleEvents(SDL_Event &e) = 0;
 };

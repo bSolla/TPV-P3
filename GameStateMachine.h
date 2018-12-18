@@ -1,14 +1,12 @@
 #pragma once
 
-#include "GameState.h"
-
 #include <stack>
 
 using namespace std;
 
+class GameState;
 
-class GameStateMachine
-{
+class GameStateMachine {
 private:
 	stack <GameState*> gameStateStack;
 

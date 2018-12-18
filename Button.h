@@ -1,10 +1,17 @@
 #pragma once
 #include "SDLGameObject.h"
-class Button :
-	public SDLGameObject
-{
+
+class Game;
+
+using CallBackOnClick = void (Game *gamePtr);
+
+
+class Button : public SDLGameObject {
+protected:
+	CallBackOnClick *callback = nullptr;
+
 public:
-	Button();
+	Button(Game *gamePtr, Vector2D pos, CallBackOnClick cb);
 	~Button();
 
 	// callbacks

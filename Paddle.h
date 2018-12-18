@@ -28,7 +28,7 @@ public:
 	// changes the size of the paddle based on a scale
 	void changeSize (double scale);
 	// given a SDL_Event e, checks for left/right arrows and changes the paddle's speed;
-	virtual void handleEvents (SDL_Event &e);
+	virtual bool handleEvents (SDL_Event &e);
 	// checks if an object collides with the paddle and if so, returns the collision vector (with a degree proportional to the paddle collision point)
 	virtual bool collides (SDL_Rect objectRect, Vector2D &collVector);
 	// updates the paddle position

@@ -13,3 +13,6 @@ PlayState::~PlayState()
 
 void PlayState::render() {
 }
+
+void PlayState::update () {
+}

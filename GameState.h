@@ -8,12 +8,13 @@
 
 #include "Utilities.h"
 #include "GameObject.h"
-#include "Game.h"
 #include "Texture.h"
 #include "FileNotFoundError.h"
 #include "FileFormatError.h"
 #include "SDLError.h"
 #include "ArkanoidError.h"
+
+class Game;
 
 typedef list<GameObject*>::iterator itStage;
 class GameState
@@ -26,6 +27,6 @@ public:
 	virtual ~GameState();
 	virtual void render();
 	virtual void update();
-	virtual void handleEvents(SDL_Event &e); // be careful with self destruction here
+	virtual bool handleEvents(SDL_Event &e); // be careful with self destruction here
 };
 

@@ -38,7 +38,7 @@ public:
 	virtual void update ();
 	virtual void saveToFile(ofstream &file);
 	virtual void loadFromFile(ifstream &file);
-	virtual void handleEvents(SDL_Event &e) {}
+	virtual bool handleEvents (SDL_Event &e) { SDLGameObject::handleEvents (e); }
 
 
 private:

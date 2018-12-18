@@ -31,4 +31,6 @@ public:
 	virtual void render();
 
 	virtual void update() = 0;
+
+	virtual bool handleEvents (SDL_Event &e) { return false; }
 };

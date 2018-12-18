@@ -31,7 +31,7 @@ public:
 	// updates the ball position
 	virtual void update ();
 
-	virtual void handleEvents (SDL_Event &e) {}
+	virtual bool handleEvents (SDL_Event &e) { SDLGameObject::handleEvents (e); }
 
 	virtual void loadFromFile (ifstream &file);
 	virtual void saveToFile (ofstream &file);

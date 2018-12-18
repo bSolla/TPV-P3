@@ -39,6 +39,6 @@ public:
 	virtual void loadFromFile (ifstream &file) {} // it is done directly in blocksmap, because the block needs the color for the constructor, and to find the right texture
 	virtual void saveToFile (ofstream &file);
 	virtual void update () {}
-	virtual void handleEvents(SDL_Event &e) {}
+	virtual bool handleEvents (SDL_Event &e) { SDLGameObject::handleEvents (e); }
 };
 
