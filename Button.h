@@ -5,17 +5,18 @@ class Game;
 
 using CallBackOnClick = void (Game *gamePtr);
 
-
 class Button : public SDLGameObject {
 protected:
 	CallBackOnClick *callback = nullptr;
+	uint row = 0, col = 0;
 
 public:
-	Button(Game *gamePtr, Vector2D pos, CallBackOnClick cb);
+	Button(Game *gamePtr, Vector2D pos, CallBackOnClick cb, Texture *text, uint r);
 	~Button();
 
-	// callbacks
+	virtual bool handleEvents(SDL_Event &e);
 
-	bool handleEvent(SDL_Event &e);
+	void update () {}
+	void render ();
 };
 

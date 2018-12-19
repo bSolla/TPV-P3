@@ -4,8 +4,6 @@
 #include "ArkanoidObject.h"
 #include "FileNotFoundError.h"
 
-const string LEVELS_PATH = "levels\\";
-
 class Game;
 
 class BlocksMap : public ArkanoidObject{

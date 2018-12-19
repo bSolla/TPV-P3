@@ -9,6 +9,7 @@
 #include "Utilities.h"
 #include "GameObject.h"
 #include "Texture.h"
+#include "Button.h"
 #include "FileNotFoundError.h"
 #include "FileFormatError.h"
 #include "SDLError.h"
@@ -17,14 +18,15 @@
 class Game;
 
 typedef list<GameObject*>::iterator itStage;
-class GameState
-{
+
+class GameState {
 protected:
 	list <GameObject*> stage;
-	Game* app;
+	Game* game;
 	
 public:
 	virtual ~GameState();
+
 	virtual void render();
 	virtual void update();
 	virtual bool handleEvents(SDL_Event &e); // be careful with self destruction here

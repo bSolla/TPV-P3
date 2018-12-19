@@ -7,9 +7,10 @@
 #include "InfoBar.h"
 #include "Reward.h"
 
-class PlayState :
-	public GameState
-{
+
+using namespace std;
+
+class PlayState : public GameState {
 private:
 	itStage firstReward;
 	int numRewards = 0;
@@ -31,11 +32,13 @@ private:
 	uint score = 0;
 
 public:
-	PlayState();
+	PlayState(Game *gamePtr);
 	~PlayState();
 
 	virtual void render();
 
 	virtual void update();
+
+	virtual bool handleEvents (SDL_Event &e);
 };
 

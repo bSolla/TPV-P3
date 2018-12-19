@@ -1,5 +1,5 @@
 #include "MenuState.h"
-
+#include "Game.h"
 
 
 
@@ -12,6 +12,5 @@ MenuState::~MenuState() {
 
 
 void MenuState::endGame (Game * gamePtr) {
-
-
+	gamePtr->setExit (true);
 }

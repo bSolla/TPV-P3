@@ -2,7 +2,7 @@
 
 
 
-Button::Button(Game *gamePtr, Vector2D pos, CallBackOnClick cb) {
+Button::Button(Game *gamePtr, Vector2D pos, CallBackOnClick cb, Texture *text, uint r) {
 	double x = pos.getX ();
 	double y = pos.getY ();
 
@@ -10,14 +10,20 @@ Button::Button(Game *gamePtr, Vector2D pos, CallBackOnClick cb) {
 	position.setX (x);
 	position.setY (y);
 	callback = cb;
+	texture = text;
+
+	width = STANDARD_BUTTON_WIDTH;
+	height = STANDARD_BUTTON_HEIGHT;
+
+	row = r;
 }
 
 
 Button::~Button() {
-	
+	game = nullptr;
 }
 
-bool Button::handleEvent(SDL_Event &e) {
+bool Button::handleEvents(SDL_Event &e) {
 	int mouseX, mouseY;
 	bool click = false;
 
@@ -34,4 +40,8 @@ bool Button::handleEvent(SDL_Event &e) {
 	}
 
 	return click;
+}
+
+void Button::render () {
+	texture->renderFrame (getRect (), row, col);
 }

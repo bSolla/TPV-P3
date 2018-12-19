@@ -9,17 +9,17 @@ GameState::~GameState(){
 
 
 void GameState::render() {
-	for (auto it = stage.begin (); it != stage.end (); ++it) {
+	for (itStage it = stage.begin (); it != stage.end (); ++it) {
 		(*it)->render ();
 	}
 }
 
 
 void GameState::update(){
-	auto it = stage.begin ();
+	itStage it = stage.begin ();
 
 	while (it != stage.end ()) {
-		auto next = it;
+		itStage next = it;
 		++next;
 		(*it)->update ();
 		it = next;
@@ -28,10 +28,10 @@ void GameState::update(){
 
 
 bool GameState::handleEvents(SDL_Event &e) {
-	auto it = stage.begin ();
+	itStage it = stage.begin ();
 	bool handled = false;
 
-	while (it != stage.end () && !handled) {
+	while (!handled && it != stage.end ()) {
 		if ((*it)->handleEvents (e)) {
 			handled = true;
 		}
