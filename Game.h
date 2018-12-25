@@ -33,8 +33,8 @@ public:
 	void setExit (bool value) { exit = value; }
 	void startGame ();
 	void pauseMenu ();
-	void backToGame () { getStateMachine ()->popState (); } //TODO: clean up
-	void backToMainMenu () { backToGame (); getStateMachine ()->popState (); } // TODO: clean 
+	void backToGame ();
+	void backToMainMenu (); 
 
 	void resizeWindow (int newHeight, int newWidth) { } //TODO: fill
 	// renders the instructions screen for entering the file code for loading

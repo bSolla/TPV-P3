@@ -7,4 +7,5 @@ EndMenu::EndMenu () {
 
 
 EndMenu::~EndMenu () {
+	// pointer deletion is made in the base class
 }

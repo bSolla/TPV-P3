@@ -12,6 +12,7 @@ MainMenu::MainMenu (Game *gamePtr) { // TODO: change the row number for an enum 
 
 
 MainMenu::~MainMenu () {
+	// pointer deletion is made in the base class
 }
 
 

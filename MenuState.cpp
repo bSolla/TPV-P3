@@ -8,6 +8,7 @@ MenuState::MenuState() {
 
 
 MenuState::~MenuState() {
+	// pointer deletion is made in the base class
 }
 
 

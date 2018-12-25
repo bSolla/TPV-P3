@@ -13,7 +13,7 @@ PlayState::PlayState(Game *gamePtr) {
 
 
 PlayState::~PlayState() {
-	// call parent destructor? or is it automatic?
+	// pointer deletion is made in the base class
 }
 
 void PlayState::render() {

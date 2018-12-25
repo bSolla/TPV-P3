@@ -8,6 +8,9 @@ GameStateMachine::GameStateMachine() {
 
 
 GameStateMachine::~GameStateMachine() {
+	while (!gameStateStack.empty ()) {
+		popState ();
+	}
 }
 
 GameState* GameStateMachine::currentState() {

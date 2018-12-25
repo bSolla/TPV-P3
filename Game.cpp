@@ -11,7 +11,7 @@ Game::Game() {
 
 
 Game::~Game() {
-	// TODO: delete states
+	delete stateMachine;	// the individual states are deleted within GameStateMachine (in its destructor)
 }
 
 
@@ -98,6 +98,17 @@ void Game::startGame () {
 
 void Game::pauseMenu () {
 	stateMachine->pushState (new PauseMenu (this));
+}
+
+
+void Game::backToGame () {
+	getStateMachine ()->popState ();
+}
+
+
+void Game::backToMainMenu () {
+	backToGame (); 
+	getStateMachine ()->popState ();
 }
 
 

@@ -13,6 +13,7 @@ PauseMenu::PauseMenu (Game *gamePtr) {
 
 
 PauseMenu::~PauseMenu () {
+	// pointer deletion is made in the base class
 }
 
 

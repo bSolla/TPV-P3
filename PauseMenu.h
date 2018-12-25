@@ -7,10 +7,10 @@ using namespace std;
 class PauseMenu : public MenuState {
 private:
 	enum ButtonTypes { Play, Save, BackToMainMenu, Exit };
-	const Vector2D buttonPositions[4] = { {double(STANDARD_BUTTON_X), double((WIN_HEIGHT / 8))}, 
-									{double(STANDARD_BUTTON_X), double((WIN_HEIGHT / 8) * 3)}, 
-									{double(STANDARD_BUTTON_X), double((WIN_HEIGHT / 8) * 5)}, 
-									{double(STANDARD_BUTTON_X), double((WIN_HEIGHT / 8) * 7)} };
+	const Vector2D buttonPositions[4] = { {double(STANDARD_BUTTON_X), double((WIN_HEIGHT / 16) * 3)}, 
+									{double(STANDARD_BUTTON_X), double((WIN_HEIGHT / 16) * 6)}, 
+									{double(STANDARD_BUTTON_X), double((WIN_HEIGHT / 16) * 9)}, 
+									{double(STANDARD_BUTTON_X), double((WIN_HEIGHT / 16) * 12)} };
 
 
 	static void resume (Game *gamePtr);
