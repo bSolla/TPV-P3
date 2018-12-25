@@ -2,8 +2,7 @@
 #include "ArkanoidObject.h"
 #include <fstream>
 
-class MovingObject :
-	public ArkanoidObject {
+class MovingObject : public ArkanoidObject {
 protected:
 	Vector2D speed;
 public:

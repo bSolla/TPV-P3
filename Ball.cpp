@@ -1,34 +1,37 @@
-//#include "Ball.h"
-//#include "Game.h"
-//
-//
-//Ball::Ball (Game* gamePtr) {
-//	game = gamePtr;
-//	texture = game->getTexture (TextureNames::ball_);
-//
-//	height = cellSize; 
-//	width = cellSize;
-//	speed.setX (MAX_SPEED_MODULE * -0.6);
-//	speed.setY (MAX_SPEED_MODULE * -0.6);
-//}
-//
-//
-//Ball::~Ball () {
-//	game = nullptr;
-//	texture = nullptr;
-//}
-//
-//
-//void Ball::setInitialPosition (int mapWidth, int verticalOffset) {
-//	position.setX (double (mapWidth) / 2 + double (cellSize));
-//	position.setY (double (verticalOffset));
-//}
-//
-//
-//void Ball::render () {
-//	ArkanoidObject::render ();
-//}
-//
+#include "Ball.h"
+#include "Game.h"
+
+
+// TODO: correct methods/functions so they run in the new framework
+
+Ball::Ball (Game* gamePtr, PlayState *playStatePtr) {
+	game = gamePtr;
+	playState = playStatePtr;
+	texture = game->getTexture (TextureNames::ball_);
+
+	height = cellSize; 
+	width = cellSize;
+	speed.setX (MAX_SPEED_MODULE * -0.6);
+	speed.setY (MAX_SPEED_MODULE * -0.6);
+}
+
+
+Ball::~Ball () {
+	game = nullptr;
+	texture = nullptr;
+}
+
+
+void Ball::setInitialPosition (int mapWidth, int verticalOffset) {
+	position.setX (double (mapWidth) / 2 + double (cellSize));
+	position.setY (double (verticalOffset));
+}
+
+
+void Ball::render () {
+	ArkanoidObject::render ();
+}
+
 //
 //void Ball::checkCollisions () {
 //	Vector2D collVect;

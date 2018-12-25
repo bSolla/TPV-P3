@@ -31,9 +31,19 @@ private:
 	uint lastTicks = 0, currentTicks = 0;
 	uint score = 0;
 
+	uint mapWidth = WIN_WIDTH, mapHeight = WIN_HEIGHT;
+
 public:
 	PlayState(Game *gamePtr);
 	~PlayState();
+
+	// getter functions
+	uint getMapWidth() const { return mapWidth; }
+	uint getMapHeight() const { return mapHeight; }
+
+
+	// returns wether the ball collides with an object or not, and if it does, returns the collision vector
+	bool collides(SDL_Rect ballRect, Vector2D ballSpeed, Vector2D &collVector);
 
 	virtual void render();
 

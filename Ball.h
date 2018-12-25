@@ -8,6 +8,7 @@ const double MAX_SPEED_MODULE = 6;
 const double BASE_SPEED = -2;
 
 class Game;
+class PlayState;
 
 class Ball : public MovingObject{
 // --------------------- variables------------------------------------------------------
@@ -17,7 +18,7 @@ private:
 
 // ---------------------- methods ------------------------------------------------------
 public:
-	Ball (Game* gamePtr);
+	Ball (Game* gamePtr, PlayState *playStatePtr);
 	~Ball ();
 
 	// initializes the ball position in the center of the map, just over the paddle
