@@ -1,8 +1,6 @@
 #include "Ball.h"
 #include "Game.h"
-
-
-// TODO: correct methods/functions so they run in the new framework
+#include "PlayState.h"
 
 Ball::Ball (Game* gamePtr, PlayState *playStatePtr) {
 	game = gamePtr;
@@ -32,56 +30,56 @@ void Ball::render () {
 	ArkanoidObject::render ();
 }
 
-//
-//void Ball::checkCollisions () {
-//	Vector2D collVect;
-//
-//	if (game->collides (this->getRect(), speed, collVect)) {
-//		if (collVect.getX () == 0.0) {
-//			speed.setY (-1 * speed.getY ());
-//		}
-//		else if (collVect.getY () == 0.0) {
-//			speed.setX (-1 * speed.getX ());
-//		}
-//		else { // collision with the paddle
-//			Vector2D collVectCopy = collVect;
-//			double xAux = -1 * collVect.getX () * MAX_SPEED_MODULE;
-//			double yAux = -1 * collVect.getY () * MAX_SPEED_MODULE;
-//
-//			if (xAux == 0) {
-//				if (collVectCopy.getX () < 0)
-//					xAux = -(MAX_SPEED_MODULE + yAux);
-//				else 
-//					xAux = MAX_SPEED_MODULE + yAux;
-//			}
-//
-//			speed.setX (xAux);
-//			speed.setY (yAux);
-//		}
-//	}
-//}
-//
-//
-//bool Ball::checkBallOut () {
-//	return (position.getY () + cellSize > game->getMapHeight ());
-//}
-//
-//
-//void Ball::update () {
-//	MovingObject::update();
-//	checkCollisions ();
-//
-//	if (checkBallOut ()) {
-//		game->decreaseLives ();
-//	}
-//}
-//
-//
-//void Ball::loadFromFile (ifstream &file) {
-//	MovingObject::loadFromFile (file);
-//}
-//
-//
-//void Ball::saveToFile (ofstream &file) {
-//	MovingObject::saveToFile (file);
-//}
+
+void Ball::checkCollisions () {
+	Vector2D collVect;
+
+	if (playState->collides (this->getRect(), speed, collVect)) {
+		if (collVect.getX () == 0.0) {
+			speed.setY (-1 * speed.getY ());
+		}
+		else if (collVect.getY () == 0.0) {
+			speed.setX (-1 * speed.getX ());
+		}
+		else { // collision with the paddle
+			Vector2D collVectCopy = collVect;
+			double xAux = -1 * collVect.getX () * MAX_SPEED_MODULE;
+			double yAux = -1 * collVect.getY () * MAX_SPEED_MODULE;
+
+			if (xAux == 0) {
+				if (collVectCopy.getX () < 0)
+					xAux = -(MAX_SPEED_MODULE + yAux);
+				else 
+					xAux = MAX_SPEED_MODULE + yAux;
+			}
+
+			speed.setX (xAux);
+			speed.setY (yAux);
+		}
+	}
+}
+
+
+bool Ball::checkBallOut () {
+	return (position.getY () + cellSize > playState->getMapHeight ());
+}
+
+
+void Ball::update () {
+	MovingObject::update();
+	checkCollisions ();
+
+	if (checkBallOut ()) {
+		playState->decreaseLives ();
+	}
+}
+
+
+void Ball::loadFromFile (ifstream &file) {
+	MovingObject::loadFromFile (file);
+}
+
+
+void Ball::saveToFile (ofstream &file) {
+	MovingObject::saveToFile (file);
+}

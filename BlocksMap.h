@@ -4,7 +4,6 @@
 #include "ArkanoidObject.h"
 #include "FileNotFoundError.h"
 
-class Game;
 
 class BlocksMap : public ArkanoidObject{
 // --------------------- variables------------------------------------------------------
@@ -19,7 +18,7 @@ private:
 
 // ---------------------- methods ------------------------------------------------------
 public:
-	BlocksMap (Game* gamePtr);
+	BlocksMap (Game* gamePtr, PlayState *playStatePtr);
 	~BlocksMap ();
 
 	// deletes and sets the specified block to nullPtr
@@ -27,7 +26,9 @@ public:
 
 	// loads data from the .ark files and saves it to a Block matrix (cells); also scales the window size according to the number of rows and cols
 	void load (const string &filename);
+	// checks if the ball collides with the block map and if so, returns a pointer to the hit block. if nothing is hit, returns nullptr
 	Block* collides (const SDL_Rect& ballRect, const Vector2D& ballVel, Vector2D& collVector);
+	// returns a pointer to the block that's positioned in the point p, or nullptr if there is none
 	Block* blockAt (const Vector2D& p);
 	// renders the whole Block matrix
 	virtual void render ();
@@ -36,7 +37,7 @@ public:
 	virtual void update ();
 	virtual void saveToFile(ofstream &file);
 	virtual void loadFromFile(ifstream &file);
-	virtual bool handleEvents (SDL_Event &e) { SDLGameObject::handleEvents (e); }
+	virtual bool handleEvents (SDL_Event &e) { return SDLGameObject::handleEvents (e); }
 
 
 private:

@@ -7,8 +7,6 @@
 const double MAX_SPEED_MODULE = 6;
 const double BASE_SPEED = -2;
 
-class Game;
-class PlayState;
 
 class Ball : public MovingObject{
 // --------------------- variables------------------------------------------------------
@@ -32,7 +30,7 @@ public:
 	// updates the ball position
 	virtual void update ();
 
-	virtual bool handleEvents (SDL_Event &e) { SDLGameObject::handleEvents (e); }
+	virtual bool handleEvents (SDL_Event &e) { return SDLGameObject::handleEvents (e); }
 
 	virtual void loadFromFile (ifstream &file);
 	virtual void saveToFile (ofstream &file);

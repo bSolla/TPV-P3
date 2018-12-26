@@ -1,12 +1,15 @@
 #include "PlayState.h"
 #include "Game.h"
 
-// TODO: change all iterators to the stage from auto to itStage, in every Game State
 
 // TODO: modify all game object constructors so they take in a pointer to Play State too
 // Objects done:	
 	// Paddle
-	//
+	// Ball
+	// Block
+	// BlocksMap
+	// Reward
+	// 
 
 
 PlayState::PlayState(Game *gamePtr) {
@@ -19,6 +22,68 @@ PlayState::PlayState(Game *gamePtr) {
 
 PlayState::~PlayState() {
 	// pointer deletion is made in the base class
+}
+
+
+void PlayState::positionObjects () {
+	// position paddle -------------------------------------
+	if (dynamic_cast<Paddle*>(*paddleIt) != nullptr) { 
+		dynamic_cast<Paddle*>(*paddleIt)->setInitialPosition (mapWidth, mapHeight - STANDARD_CELL_HEIGHT * 3);
+	}
+	else
+		throw ArkanoidError ("Casting error\n");
+
+	// position ball --------------------------------------
+	if (dynamic_cast<Ball*>(*ballIt) != nullptr) { 
+		dynamic_cast<Ball*>(*ballIt)->setInitialPosition (mapWidth, mapHeight - STANDARD_CELL_HEIGHT * 4);
+	}
+	else
+		throw ArkanoidError ("Casting error\n");
+}
+
+
+void PlayState::scaleObjects (uint newMapWidth, uint newMapHeight) {
+	mapHeight = newMapHeight;
+	mapWidth = newMapWidth;
+
+	itStage wallIt = stage.begin (); // it points to map for now
+	wallIt++; // but now it points to the first wall
+
+	// we can't make it in a loop because each wall has unique scale
+
+	// left wall -------------------------------------------
+	if (dynamic_cast<Wall*>(*wallIt) != nullptr) { 
+		dynamic_cast<Wall*>(*wallIt)->setScale (mapHeight - STANDARD_CELL_HEIGHT, WALL_THICKNESS, WallType::leftW); // -STANDARD_CELL_HEIGHT to account for the info bar
+	}
+	else
+		throw ArkanoidError ("Casting error\n");
+	wallIt++;
+
+	// right wall ----------------------------------------
+	if (dynamic_cast<Wall*>(*wallIt) != nullptr) { 
+		dynamic_cast<Wall*>(*wallIt)->setScale (mapHeight - STANDARD_CELL_HEIGHT, WALL_THICKNESS, WallType::rightW);
+	}
+	else
+		throw ArkanoidError ("Casting error\n");
+	wallIt++;
+
+	// top wall ------------------------------------------
+	if (dynamic_cast<Wall*>(*wallIt) != nullptr) { 
+		dynamic_cast<Wall*>(*wallIt)->setScale (WALL_THICKNESS, mapWidth, WallType::topW);
+	}
+	else
+		throw ArkanoidError ("Casting error\n");
+
+	game->setWindowSize (mapWidth, mapHeight);
+}
+
+
+void PlayState::setPaddleSize (double scale) {
+	if (dynamic_cast<Paddle*>(*paddleIt) != nullptr) { 
+		dynamic_cast<Paddle*>(*paddleIt)->changeSize (scale);
+	}
+	else
+		throw ArkanoidError ("Casting error\n");
 }
 
 
@@ -41,26 +106,63 @@ bool PlayState::collides (SDL_Rect ballRect, Vector2D ballSpeed, Vector2D &collV
 		dynamic_cast<BlocksMap*>(*it)->setBlockNull (blockPtr);
 
 		if (rewardRand < 1) {
-			// TODO: when Rewards are ready, migrate createReward from Game to PlayState (look at the P2 version for the code)
-			//createReward (ballRect);
+			createReward (ballRect);
 			cout << "debug: created reward\n";
 		}
 	}
-
-	// TODO: fix the iterators/castings so we can check the collisions
-
-	//
-	//++it; // it now points to the first wall
-	//// ----------------------------------------------- if collides with any of the walls or the paddle...
-	//while (it != firstReward && !ballCollides) { // the paddle is the last object before the rewards
-	//	ballCollides = (*it)->collides (ballRect, collVector);
-	//	++it;
-	//}
+	
+	++it; // it now points to the first wall
+	// ----------------------------------------------- if collides with any of the walls or the paddle...
+	while (it != firstReward && !ballCollides) { // the paddle is the last object before the rewards
+		ballCollides = (*it)->collides (ballRect, collVector);
+		++it;
+	}
 
 	return ballCollides;
 }
 
 
+bool PlayState::rewardCollides (SDL_Rect rewardRect) {
+	Vector2D dummyVector2D;
+	bool ret = false;
+
+	if (dynamic_cast<Paddle*>(*paddleIt) != nullptr) { 
+		ret = dynamic_cast<Paddle*>(*paddleIt)->collides (rewardRect, dummyVector2D);
+	}
+	else
+		throw ArkanoidError ("Casting error\n");
+
+	return ret;
+}
+
+
+void PlayState::createReward (SDL_Rect rect) {
+	srand (currentTicks);
+	int rewardType = rand () % 4;
+	Reward *r = new Reward (game, this, RewardType (rewardType));
+	r->setPosition (rect);
+
+	stage.push_back (r);
+	itStage itLastReward = --(stage.end ());
+	if (firstReward == stage.end ()) {
+		firstReward = itLastReward;
+	}
+
+	numRewards++;
+	r->setItList (itLastReward);
+}
+
+
+void PlayState::killObject (itStage it) {
+	if (it == firstReward) {
+		firstReward++;
+	}
+
+	delete *it;
+	stage.erase (it);
+
+	numRewards--;
+}
 void PlayState::render() {
 	GameState::render ();
 

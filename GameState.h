@@ -7,7 +7,7 @@
 #include <list>
 
 #include "Utilities.h"
-#include "GameObject.h"
+#include "SDLGameObject.h"
 #include "Texture.h"
 #include "Button.h"
 #include "FileNotFoundError.h"
@@ -17,11 +17,11 @@
 
 class Game;
 
-typedef list<GameObject*>::iterator itStage;
+typedef list<SDLGameObject*>::iterator itStage;
 
 class GameState {
 protected:
-	list <GameObject*> stage;
+	list <SDLGameObject*> stage;
 	Game* game;
 	
 public:

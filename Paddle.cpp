@@ -1,6 +1,6 @@
 #include "Paddle.h"
 #include "Game.h"
-
+#include "PlayState.h"
 
 
 Paddle::Paddle (Game* gamePtr, PlayState *playStatePtr) {

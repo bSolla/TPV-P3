@@ -5,7 +5,6 @@
 #include "Utilities.h"
 #include "ArkanoidObject.h"
 
-class Game;
 
 enum BlockColor { blue, green, red, yellow, black, purple};
 
@@ -19,7 +18,7 @@ private:
 // ---------------------- methods ------------------------------------------------------
 public:
 	Block () {};
-	Block (Game *gamePtr, int colorIndex);
+	Block (Game *gamePtr, PlayState *playStatePtr, int colorIndex);
 	~Block ();
 	
 	// sets the internal color atribute to newColor, and calculates the sprite sheet row and column to be used when rendering 
@@ -39,6 +38,6 @@ public:
 	virtual void loadFromFile (ifstream &file) {} // it is done directly in blocksmap, because the block needs the color for the constructor, and to find the right texture
 	virtual void saveToFile (ofstream &file);
 	virtual void update () {}
-	virtual bool handleEvents (SDL_Event &e) { SDLGameObject::handleEvents (e); }
+	virtual bool handleEvents (SDL_Event &e) { return SDLGameObject::handleEvents (e); }
 };
 

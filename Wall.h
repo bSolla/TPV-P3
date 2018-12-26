@@ -6,8 +6,6 @@
 
 using namespace std;
 
-class Game; 
-
 enum WallType { topW, rightW, leftW};
 const double WINDOW_ORIGIN = 0.0;
 
@@ -18,7 +16,7 @@ private:
 
 // ---------------------- methods ------------------------------------------------------
 public:
-	Wall (Game* gamePtr, Texture* texturePtr);
+	Wall (Game* gamePtr, PlayState *playStatePtr, Texture* texturePtr);
 	~Wall ();
 
 	// sets the correct proportions so the rendered wall can fit the screen
@@ -34,6 +32,6 @@ public:
 	virtual void loadFromFile (ifstream &file);
 	virtual void saveToFile (ofstream &file);
 	virtual void update () {}
-	virtual bool handleEvents (SDL_Event &e) { SDLGameObject::handleEvents (e); }
+	virtual bool handleEvents (SDL_Event &e) { return SDLGameObject::handleEvents (e); }
 };
 
