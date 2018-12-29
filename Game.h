@@ -25,6 +25,8 @@ private:
 	void iniSDL();
 	// initializes all textures
 	void iniTextures();
+	// pauses the game and saves numeric keyboard input as the file name
+	string pickFileName ();
 
 public:
 	Game();
@@ -42,18 +44,21 @@ public:
 	void setExit (bool value) { exit = value; }
 	void startGame ();
 	void pauseMenu ();
+	// pops 1 time, used in the pause menu
 	void backToGame ();
+	// pops 2 times: used in the pause and end menu
 	void backToMainMenu (); 
 
-	void resizeWindow (int newHeight, int newWidth) { } //TODO: fill -- call this when entering/exiting a menu state
 	// renders the instructions screen for entering the file code for loading
 	void renderInstructions ();
 	// renders a number "keyboard" to use for entering the file code for loading
 	void renderNumberButtons ();
 	// returns true if the player clicked on one of the numbers or the "done" button, and returns a reference to said number (-1=done)
 	bool handleNumberButtons (SDL_Event SDLevent, int &number);
-
-	void loadFromFile (string code) { cout << "load file:" << code << "\n"; } // TODO: fill --call loadFromFile of all the stage objects
+	// if it exists, loads the file with the code given
+	void loadFromFile (string code); 
+	// gets a code by cin and saves the current state on the game in file "code.ark"
+	void saveToFile();
 
 	void handleEvents ();
 	void run ();

@@ -2,26 +2,65 @@
 #include "Game.h"
 
 
-// TODO: modify all game object constructors so they take in a pointer to Play State too
-// Objects done:	
-	// Paddle
-	// Ball
-	// Block
-	// BlocksMap
-	// Reward
-	// 
-
-
 PlayState::PlayState(Game *gamePtr) {
 	game = gamePtr;
 
-	// create game objects
-	// push them to the stage
+	stage.push_back (new BlocksMap (game, this));
+
+	stage.push_back (new Wall (game, this, game->getTexture (TextureNames::sideWall))); // leftW
+	stage.push_back (new Wall (game, this, game->getTexture (TextureNames::sideWall))); // rightW
+	stage.push_back (new Wall (game, this, game->getTexture (TextureNames::topWall))); // topW
+
+	stage.push_back (new Ball (game, this));
+	ballIt = stage.end(); // ballIt set past the end
+	ballIt--; // ballIt actually pointing to the position in the list
+
+	stage.push_back (new Paddle (game, this));
+	paddleIt = stage.end (); // paddleIt set past the end
+	paddleIt--; //paddleIt actually pointing to the position in the list
+
+	firstReward = stage.end ();
+
+	// loads the level into BlocksMap
+	if (dynamic_cast<BlocksMap*>(*stage.begin ()) != nullptr) {
+		dynamic_cast<BlocksMap*>(*stage.begin ())->load (LEVEL_SHARED_NAME + to_string (currentLevel) + LEVEL_EXTENSION);
+	}
+	else
+		throw ArkanoidError ("Casting error\n");
+
+	infoBar = new InfoBar (game, this);
+
+	positionObjects ();
+}
+
+
+PlayState::PlayState (Game *gamePtr, uint lev, uint secs, uint mins) {
+	currentLevel = lev;
+	seconds = secs;
+	minutes = mins;
+	game = gamePtr;
+
+	stage.push_back (new BlocksMap (game, this));
+
+	stage.push_back (new Wall (game, this, game->getTexture (TextureNames::sideWall))); // leftW
+	stage.push_back (new Wall (game, this, game->getTexture (TextureNames::sideWall))); // rightW
+	stage.push_back (new Wall (game, this, game->getTexture (TextureNames::topWall))); // topW
+
+	stage.push_back (new Ball (game, this));
+	ballIt = stage.end(); // ballIt set past the end
+	ballIt--; // ballIt actually pointing to the position in the list
+
+	stage.push_back (new Paddle (game, this));
+	paddleIt = stage.end (); // paddleIt set past the end
+	paddleIt--; //paddleIt actually pointing to the position in the list
+
+	firstReward = stage.end ();
 }
 
 
 PlayState::~PlayState() {
-	// pointer deletion is made in the base class
+	// stage pointer deletion is made in the base class
+	delete infoBar;
 }
 
 
@@ -107,7 +146,6 @@ bool PlayState::collides (SDL_Rect ballRect, Vector2D ballSpeed, Vector2D &collV
 
 		if (rewardRand < 1) {
 			createReward (ballRect);
-			cout << "debug: created reward\n";
 		}
 	}
 	
@@ -163,17 +201,7 @@ void PlayState::killObject (itStage it) {
 
 	numRewards--;
 }
-void PlayState::render() {
-	GameState::render ();
 
-	// TODO: time management: infoBar, handleTime()
-	//infoBar->render (seconds, minutes, currentLevel, lives);
-}
-
-void PlayState::update () {
-	cout << "updating playScene\n";
-	GameState::update ();
-}
 
 bool PlayState::handleEvents (SDL_Event & e) {
 	bool handled = false;
@@ -181,10 +209,119 @@ bool PlayState::handleEvents (SDL_Event & e) {
 	if (e.type == SDL_KEYUP) {
 		if (e.key.keysym.sym == SDLK_ESCAPE) {
 			game->pauseMenu ();
-			handled = true;
+			return true;
 		}
 	}
-
+	
+	// only checks if esc hasnt been pushed
+	handled = GameState::handleEvents (e);
 
 	return handled;
+}
+
+
+void PlayState::handleLevelUp () {
+	if (levelClear) {
+		delete (*stage.begin ());// delete the old map and make to new one for the new level
+		stage.erase (stage.begin ());
+		stage.push_front (new BlocksMap (game, this)); // new map
+
+		delete infoBar; // delete the old info bar to make a new one
+
+		while (numRewards > 0) {
+			killObject (firstReward);
+		}
+
+		currentLevel++;
+
+		if (currentLevel > MAX_LEVEL)
+			end = true;
+		else {
+			// static cast because we know for sure that the first object is the map (it was created within this method)
+			static_cast<BlocksMap*>(*stage.begin())->load (LEVEL_SHARED_NAME + to_string (currentLevel) + LEVEL_EXTENSION);
+			
+			seconds = 0;
+			minutes = 0;
+
+			infoBar = new InfoBar (game, this);
+			positionObjects ();
+
+			levelClear = false;
+		}
+	}
+}
+
+
+void PlayState::handleTime () {
+	currentTicks = SDL_GetTicks ();
+
+	if (currentTicks > lastTicks + MILLISECONDS_IN_A_TICK) {
+		seconds++;
+
+		if (seconds > 59) {
+			seconds = 0;
+			minutes++;
+		}
+
+		lastTicks = currentTicks;
+	}
+}
+
+
+void PlayState::render() {
+	infoBar->render (seconds, minutes, currentLevel, lives);
+	
+	GameState::render ();
+}
+
+
+void PlayState::update () {
+	GameState::update ();
+
+	handleLevelUp ();
+	handleTime ();
+}
+
+
+void PlayState::loadFromFile (ifstream & file) { // in this method we use static cast to the base class of all game objects in the playscene, because we need to call load from file (which wouldn't make sense in SDLObject as a button wouln't need to load itself from a file)
+	itStage it = stage.begin ();
+	static_cast<ArkanoidObject*>(*it)->loadFromFile(file); // loads map
+	++it;
+
+	infoBar = new InfoBar (game, this);
+
+	for (it; it != stage.end(); ++it) {
+		static_cast<ArkanoidObject*>(*it)->loadFromFile(file);
+	}
+
+	file >> numRewards;
+	firstReward = stage.end ();
+
+	for (uint i = 0; i < numRewards; ++i) {
+		stage.push_back (new Reward (game, this));
+		it = stage.end ();
+		--it;
+
+		static_cast<ArkanoidObject*>(*it)->loadFromFile (file);
+		static_cast<Reward*>(*it)->setItList (it);
+	}
+
+	game->setWindowSize (mapWidth, mapHeight);
+}
+
+
+void PlayState::saveToFile (ofstream & file) { // static cast to Arkanoid object: see method above for our explanation
+	file << currentLevel << " " << seconds << " " << minutes << "\n";
+
+		for (itStage it = stage.begin (); it != firstReward; ++it) {
+			static_cast<ArkanoidObject*>(*it)->saveToFile (file);
+			file << "\n";
+		}
+
+		file << numRewards << "\n";
+
+		for (itStage it = firstReward; it != stage.end (); ++it) {
+			static_cast<ArkanoidObject*>(*it)->saveToFile (file);
+			file << "\n";
+		}
 }

@@ -66,6 +66,7 @@ private:
 
 public:
 	Reward (Game *gamePtr, PlayState *playStatePtr, RewardType rewardType);
+	// this one is used when loading from a file
 	Reward (Game *gamePtr, PlayState *playStatePtr);
 	~Reward ();
 

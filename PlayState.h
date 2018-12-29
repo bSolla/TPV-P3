@@ -40,10 +40,15 @@ private:
 	void positionObjects();
 	// creates a new reward positioned where the ball hit a block (using the ball SDL_Rect)
 	void createReward(SDL_Rect rect);
-
+	// if the control bool levelClear is true, deletes the old BlocksMap, creates a new one and reads all the corresponding info
+	void handleLevelUp();
+	// keeps track of the time elapsed since starting a level
+	void handleTime();
 
 public:
 	PlayState(Game *gamePtr);
+	// used when loading a file 
+	PlayState (Game *gamePtr, uint lev, uint secs, uint mins);
 	~PlayState();
 
 	// getter functions
@@ -66,10 +71,15 @@ public:
 	bool rewardCollides(SDL_Rect rewardRect);
 	// deletes an object from the list
 	void killObject(itStage it);
+	// calls the render method of all stage objects
 	virtual void render();
-
+	// calls the update method of all stage objects
 	virtual void update();
-
+	// checks for esc and if it hasnt been pushed calls the handle events method of all stage objects
 	virtual bool handleEvents (SDL_Event &e);
+	// calls the load from file method of all stage objects 
+	void loadFromFile (ifstream &file);
+	// calls the save to file method of all stage objects
+	void saveToFile(ofstream &file);
 };
 

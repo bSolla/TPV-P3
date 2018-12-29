@@ -12,6 +12,7 @@ const string TEXTURE_NAME_LIVES = "images\\lives.png";
 const uint N_DIVISIONS = 20;
 
 class Game;
+class PlayState;
 
 class InfoBar {
 // --------------------- variables------------------------------------------------------
@@ -22,10 +23,11 @@ private:
 	Texture* textures[3];
 
 	Game* game;
+	PlayState *playState;
 
 // ---------------------- methods ------------------------------------------------------
 public:
-	InfoBar (Game *gamePtr);
+	InfoBar (Game *gamePtr, PlayState *playStatePtr);
 	~InfoBar ();
 
 	// creates and loads the needed textures

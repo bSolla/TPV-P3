@@ -23,7 +23,7 @@ void PauseMenu::resume (Game * gamePtr) {
 
 
 void PauseMenu::save (Game * gamePtr) {
-	cout << "save game\n";
+	gamePtr->saveToFile ();
 }
 
 

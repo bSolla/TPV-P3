@@ -91,24 +91,147 @@ bool Game::handleNumberButtons (SDL_Event SDLevent, int &number) {
 }
 
 
+void Game::loadFromFile(string code) {
+	ifstream file;
+	int level, secs, mins;
+
+	file.open(LEVELS_PATH + code + SAVE_EXTENSION);
+	if (file.is_open()) {
+		file >> level >> secs >> mins;
+		
+		if (level > MAX_LEVEL) {
+			throw FileFormatError ("Level bigger than the maximum level\n");
+		}
+
+		stateMachine->pushState (new PlayState (this, level, secs, mins));
+		static_cast<PlayState*>(stateMachine->currentState ())->loadFromFile (file);
+
+		file.close();
+	}
+	else
+		throw FileNotFoundError(code + SAVE_EXTENSION);
+
+}
+
+
+void Game::saveToFile() { // TODO: use ttf to write the numbers the player selects in the screen (better feedback means better experience)
+	ofstream file;
+	try {
+		SDL_RenderClear (renderer); // to give the player some feedback that the button was actually pushed
+		SDL_RenderPresent (renderer);
+
+		string code = pickFileName ();
+		file.open (LEVELS_PATH + code + SAVE_EXTENSION);
+
+		if (file.is_open()) {
+			backToGame ();
+
+			static_cast<PlayState*>(stateMachine->currentState ())->saveToFile (file);
+		
+			file.close ();
+		}
+		else
+			throw (FileNotFoundError (code + SAVE_EXTENSION));
+		}
+	catch (ArkanoidError err) {
+		cout << err.what ();
+	}
+}
+
+
+string Game::pickFileName () {
+	SDL_Event sdlEvent;
+	bool done = false;
+	stringstream name;
+
+	while (!done) {
+		try {
+			if (SDL_PollEvent (&sdlEvent)) {
+				if (sdlEvent.type == SDL_QUIT) {
+					exit = true;
+					throw (ArkanoidError ("Aborted save\n"));
+				}
+				if (sdlEvent.type == SDL_KEYDOWN) {
+					switch (sdlEvent.key.keysym.sym) {
+					case SDLK_0:
+						name << "0";
+						break;
+					case SDLK_1:
+						name << "1";
+						break;
+					case SDLK_2:
+						name << "2";
+						break;
+					case SDLK_3:
+						name << "3";
+						break;
+					case SDLK_4:
+						name << "4";
+						break;
+					case SDLK_5:
+						name << "5";
+						break;
+					case SDLK_6:
+						name << "6";
+						break;
+					case SDLK_7:
+						name << "7";
+						break;
+					case SDLK_8:
+						name << "8";
+						break;
+					case SDLK_9:
+						name << "9";
+						break;
+					case SDLK_RETURN:
+						done = true;
+					default:
+						throw (FileFormatError (WRONG_TYPE));
+						break;
+					}// switch
+				}
+			}
+		}
+		catch (FileFormatError err) {
+			cout << err.what ();
+			cout << "Only numbers from 0 to 9 valid\n";
+		}
+	}// while !done
+
+	return name.str ();
+}
+
+
 void Game::startGame () {
 	stateMachine->pushState (new PlayState (this));
 }
 
 
 void Game::pauseMenu () {
+	setWindowSize (WIN_WIDTH, WIN_HEIGHT);
 	stateMachine->pushState (new PauseMenu (this));
 }
 
 
 void Game::backToGame () {
+	int h = WIN_HEIGHT;
+	int w = WIN_WIDTH;
+
 	getStateMachine ()->popState ();
+
+	if (dynamic_cast<PlayState*>(stateMachine->currentState()) != nullptr) { 
+		h = dynamic_cast<PlayState*>(stateMachine->currentState ())->getMapHeight ();
+		w = dynamic_cast<PlayState*>(stateMachine->currentState ())->getMapWidth ();
+	}
+	setWindowSize (w, h);
 }
 
 
 void Game::backToMainMenu () {
 	backToGame (); 
 	getStateMachine ()->popState ();
+
+	setWindowSize (WIN_WIDTH, WIN_HEIGHT);
 }
 
 
@@ -130,6 +253,8 @@ void Game::run () {
 	while (!exit) {
 		update ();
 		handleEvents ();
+
+		SDL_Delay (DELAY);
 	}
 }
 
@@ -147,6 +272,4 @@ void Game::update () {
 	stateMachine->currentState ()->update ();
 
 	render ();
-
-	// handleTime ();
 }
