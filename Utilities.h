@@ -10,7 +10,7 @@ struct TextureAttributes {
 	unsigned int rows;
 };
 // added the underscores to avoid mixing them with the variables
-enum TextureNames { ball_, bricks, paddle_, sideWall, topWall, rewards, buttons, instructions, menuNumbers };
+enum TextureNames { ball_, bricks, paddle_, sideWall, topWall, rewards, buttons, instructions, menuNumbers, endmenuTextures };
 
 
 // ---------------------- constants -----------------------------------------------------
@@ -33,7 +33,9 @@ const unsigned int WIN_HEIGHT = 600;
 const unsigned int WIN_X = SDL_WINDOWPOS_CENTERED;
 const unsigned int WIN_Y = SDL_WINDOWPOS_CENTERED;
 
-const unsigned int NUM_TEXTURES = 9;
+const SDL_Rect FULL_WINDOW_RECT = { 0, 0, WIN_WIDTH, WIN_HEIGHT };
+
+const unsigned int NUM_TEXTURES = 10;
 const unsigned int NUM_WALLS = 3;
 
 const unsigned int DELAY = 60;
@@ -49,7 +51,8 @@ const TextureAttributes TEXTURE_ATTRIBUTES[NUM_TEXTURES] =
 	{ "rewards.png", 8, 10},
 	{ "buttons.png", 1, 6},
 	{ "instructions.png", 1, 1},
-	{ "menuNumbers.png", 10, 1}
+	{ "menuNumbers.png", 10, 1},
+	{ "endmenu.png", 1, 2}
 };
 
 

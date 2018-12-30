@@ -12,6 +12,12 @@ Game::Game() {
 
 Game::~Game() {
 	delete stateMachine;	// the individual states are deleted within GameStateMachine (in its destructor)
+
+	for (uint i = 0; i < NUM_TEXTURES; ++i) {
+		delete textures[i];
+	}
+
+	quitSDL ();
 }
 
 
@@ -114,7 +120,7 @@ void Game::loadFromFile(string code) {
 }
 
 
-void Game::saveToFile() { // TODO: use ttf to write the numbers the player selects in the screen (better feedback means better experience)
+void Game::saveToFile() { 
 	ofstream file;
 	try {
 		SDL_RenderClear (renderer); // to give the player some feedback that the button was actually pushed
@@ -144,6 +150,8 @@ string Game::pickFileName () {
 	bool done = false;
 	stringstream name;
 
+	cout << "file code: ";
+
 	while (!done) {
 		try {
 			if (SDL_PollEvent (&sdlEvent)) {
@@ -155,36 +163,48 @@ string Game::pickFileName () {
 					switch (sdlEvent.key.keysym.sym) {
 					case SDLK_0:
 						name << "0";
+						cout << "0";
 						break;
 					case SDLK_1:
 						name << "1";
+						cout << "1";
 						break;
 					case SDLK_2:
 						name << "2";
+						cout << "2";
 						break;
 					case SDLK_3:
 						name << "3";
+						cout << "3";
 						break;
 					case SDLK_4:
 						name << "4";
+						cout << "4";
 						break;
 					case SDLK_5:
 						name << "5";
+						cout << "5";
 						break;
 					case SDLK_6:
 						name << "6";
+						cout << "6";
 						break;
 					case SDLK_7:
 						name << "7";
+						cout << "7";
 						break;
 					case SDLK_8:
 						name << "8";
+						cout << "8";
 						break;
 					case SDLK_9:
 						name << "9";
+						cout << "9";
 						break;
 					case SDLK_RETURN:
 						done = true;
+						cout << "\n" << "saved\n";
+						break;
 					default:
 						throw (FileFormatError (WRONG_TYPE));
 						break;
@@ -276,4 +296,11 @@ void Game::update () {
 	stateMachine->currentState ()->update ();
 
 	render ();
+}
+
+
+void Game::quitSDL () {
+	SDL_DestroyRenderer (renderer);
+	SDL_DestroyWindow (window);
+	SDL_Quit ();
 }

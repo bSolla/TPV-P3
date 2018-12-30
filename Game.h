@@ -28,6 +28,8 @@ private:
 	void iniTextures();
 	// pauses the game and saves numeric keyboard input as the file name
 	string pickFileName ();
+	// destroys both renderer and window and quits SDL
+	void quitSDL();
 
 public:
 	Game();

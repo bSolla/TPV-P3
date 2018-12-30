@@ -1,7 +1,7 @@
 #pragma once
 #include "MenuState.h"
 
-// TODO: use ttf to write "you win" or "you lose"
+
 class EndMenu : public MenuState {
 private:
 	enum ButtonTypes { BackToMainMenu, Exit };
@@ -9,6 +9,8 @@ private:
 										{double(STANDARD_BUTTON_X), double((WIN_HEIGHT / 8) * 5)} };
 
 	bool win;
+	int row = 0; // determines if we use the win or you lost background 
+	Texture *background = nullptr;
 
 	static void backToMainMenu (Game *gamePtr);
 
@@ -17,7 +19,7 @@ public:
 	~EndMenu ();
 
 	
-	virtual void render () { MenuState::render (); }
+	virtual void render ();
 
 	virtual void update () { MenuState::render (); }
 
