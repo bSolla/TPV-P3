@@ -6,12 +6,13 @@
 #include "PauseMenu.h"
 #include "Utilities.h"
 #include "Texture.h"
+#include "EndMenu.h"
 
 class Game {
 // --------------------- variables------------------------------------------------------
 private:
 	GameStateMachine *stateMachine = nullptr;
-	bool exit = false;
+	bool exit = false; // to exit and end the game
 
 	SDL_Window* window = nullptr;
 	SDL_Renderer* renderer = nullptr;
@@ -34,16 +35,17 @@ public:
 
 	// setters
 	void setWindowSize (uint w, uint h) { SDL_SetWindowSize (window, w, h); }
-
+	void setExit (bool value) { exit = value; }
+	
 	// getters
 	GameStateMachine* getStateMachine () const { return stateMachine; }
 	Texture* getTexture(TextureNames textureName) const { return textures[textureName]; }
 	SDL_Renderer* getRenderer() const { return renderer; }
 
 	// menu handling operations
-	void setExit (bool value) { exit = value; }
 	void startGame ();
 	void pauseMenu ();
+	void endMenu (bool wonGame);
 	// pops 1 time, used in the pause menu
 	void backToGame ();
 	// pops 2 times: used in the pause and end menu

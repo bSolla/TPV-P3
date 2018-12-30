@@ -10,6 +10,7 @@
 
 using namespace std;
 
+
 class PlayState : public GameState {
 // --------------------- variables------------------------------------------------------
 private:
@@ -22,7 +23,6 @@ private:
 	InfoBar* infoBar = nullptr;
 
 	bool end = false;
-	bool gameOver = false;
 	bool levelClear = false;
 	bool menu = true;
 
@@ -57,7 +57,7 @@ public:
 
 	// setter functions
 	void setLevelClear() { levelClear = true; }
-	void setGameOver() { gameOver = true; }
+	void setGameOver ();
 	void increaseLives() { if (lives < MAX_LIVES) lives++; }
 	void decreaseLives () { lives--; if (lives == 0) setGameOver (); else positionObjects (); } 
 	void setMapSize (int w, int h) { mapWidth = w; mapHeight = h; }

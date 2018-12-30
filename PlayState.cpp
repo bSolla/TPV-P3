@@ -235,7 +235,7 @@ void PlayState::handleLevelUp () {
 		currentLevel++;
 
 		if (currentLevel > MAX_LEVEL)
-			end = true;
+			game->endMenu (true);
 		else {
 			// static cast because we know for sure that the first object is the map (it was created within this method)
 			static_cast<BlocksMap*>(*stage.begin())->load (LEVEL_SHARED_NAME + to_string (currentLevel) + LEVEL_EXTENSION);
@@ -265,6 +265,11 @@ void PlayState::handleTime () {
 
 		lastTicks = currentTicks;
 	}
+}
+
+
+void PlayState::setGameOver () { 
+	game->endMenu (false); 
 }
 
 

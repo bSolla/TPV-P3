@@ -212,6 +212,10 @@ void Game::pauseMenu () {
 	stateMachine->pushState (new PauseMenu (this));
 }
 
+void Game::endMenu (bool wonGame) {
+	setWindowSize (WIN_WIDTH, WIN_HEIGHT);
+	stateMachine->pushState (new EndMenu (this, wonGame));
+}
 
 void Game::backToGame () {
 	int h = WIN_HEIGHT;
